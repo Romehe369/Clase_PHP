@@ -1,3 +1,8 @@
+<?php 
+    include 'AllFunctions.php';
+    $Mostrar=[];
+    $Alumnos_No_Matriculados=[];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,95 +15,72 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <h3 class="pb-3 pt-5">Agregar Archivos</h3>
-            <!-- Para Agregar CSV -->
-            <div class="col-12 pb-3">
-                <div class="mb-3">
-                    <!-- Creamos un formulario para leer los archivos -->
-                    <form action="Cargar.php" method="post" enctype="multipart/form-data">
-                            <label for="formFile" class="form-label">Matriculados General 2022 (.csv)</label>
-                            <!-- Leemos docentes, en nombre Docentes -->
-                            <input class="form-control mb-3" name="Docentes" type="file" id="formFile">
-                            <label for="formFile" class="form-label">Docentes 2022 (.csv)</label>
-                            <!-- Leemos alumnos Matriculados General 2022, en nombre Matriculados_General -->
-                            <input class="form-control mb-3" name="Matriculados_General" type="file" id="formFile">
-                            <label for="formFile" class="form-label">Distribución docente de tutorias en 2021-1 (.csv)</label>
-                            <!-- Leemos alumnos Distribución docente de tutorias en 2021-1, en nombre archivo1 -->
-                            <input class="form-control mb-3" name="Distribucion_docente" type="file" id="formFile">
-                            <input type="submit" class="btn btn-primary" value="Cargar">
-                    </form>
-                </div>
-            </div>
-        </div>
-            <div class="col-6 text p-3">
-                <?php
-                    include 'AllFunctions.php';
-                    #Leemos los archivos
-                    if (!isset($_FILES["Matriculados_General"])) {
-                        throw new Exception("Selecciona un archivo CSV válido.");
-                    }
-                    if (!isset($_FILES["Distribucion_docente"])) {
-                        throw new Exception("Selecciona un archivo CSV válido.");
-                    }
-                    #Cada archivo sera leido
-                    $Matriculados_General   = $_FILES["Matriculados_General"];
-                    $Distribucion_docente    = $_FILES["Distribucion_docente"];
-                    #Creamo un objeto
-                    $Mox=new Group73();
-                    #Obtenemos los matriculados en genereal
-                    $Arreglo_Matriculados=$Mox->csv_Array($Matriculados_General,0);
-                    #Obtenemos la de alumnos con tutor del anterior semestre
-                    $Arreglo_Dis_Docentes=$Mox->csv_Array($Distribucion_docente,0);
-                    #$Mox->Imprimir($Arreglo_Dis_Docentes);
-                    #Obtenemos el alumno y el docente del anterior semestre
-                    $Arreglo_Dis_Docentes_Anterior=$Mox->csv_Array($Distribucion_docente,3);
-                    #Obtenemos los alumnos no matriculados
-                    $Alumnos_No_Matriculados=$Mox->Diferencia($Arreglo_Dis_Docentes,$Arreglo_Matriculados);
-                    #$Mox->Imprimir($Arreglo_Matriculados);
-                    #Obtenemos los alumnos sin tutor
-                    $AlumnosSinTutor=$Mox->Diferencia($Arreglo_Matriculados,$Arreglo_Dis_Docentes);
-                    $Mostrar=$Arreglo_Dis_Docentes_Anterior;
-                ?>
-            </div>
-    </div>
-    <div class="container mt-5">
-        <div class="row"> 
-            <form action="Ejecutar.php" method="post" enctype="multipart/form-data">
-                <h3>EXPORTAR</h3>
-                <h5>Alumnos sin tutor</h5><p><p>
-                <th><a action="Ejecutar.php" <?php $Mostrar=$AlumnosSinTutor ?> class="btn btn-info">EXPORTAR</a></th>
-                <th><a href="#Ejecutar?id=<?php $Mostrar=$Arreglo_Dis_Docentes ?>" class="btn btn-success">VER</a></th>
-                <p><p>
-                <h5>Alumnos no matriculados</h5><p><p>
-                <th><a href="actualizar.php?id=<?php echo $row['Cod_Asignatura'] ?>" class="btn btn-info">EXPORTAR</a></th>
-                <th><a href="delete.php?id=<?php echo $row['Cod_Asignatura'] ?>" class="btn btn-success">VER</a></th>
-                <p><p>
-                <h5>Distribucion de tutores</h5><p><p>
-                <th><a href="actualizar.php?id=<?php echo $row['Cod_Asignatura'] ?>" class="btn btn-info">GUARDAR</a></th>
-                <th><a href="delete.php?id=<?php echo $row['Cod_Asignatura'] ?>" class="btn btn-success">VER</a></th>
-            </form>
-            <div class="col-md-8" id="Ejecutar">
-                            <table class="table" >
-                                <thead class="table-success table-striped" id="Ejecutar" >
-                                    <tr>
-                                    <th>Numero</th>
-                                    <th>Codigo</th>
-                                    <th>Nombre</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+        <h3 class="pb-3 pt-5">Agregar Archivos</h3>
+        <!-- Creamos un formulario para leer los archivos -->
+        <form action="index.php" method="post" enctype="multipart/form-data">
+            <label for="formFile" class="form-label">Matriculados General 2022 (.csv)</label>
+            <!-- Leemos docentes, en nombre Docentes -->
+            <input class="form-control mb-3" name="Matriculados_General" type="file" id="formFile">
 
-                                <tbody>
-                                    <?php  
-                                        $Mox->Imprimir($Alumnos_No_Matriculados);
-                                        $Mox->GenerarCSV($Alumnos_No_Matriculados);
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>  
+            <label for="formFile" class="form-label">Docentes 2022 (.csv)</label>
+            <!-- Leemos alumnos Matriculados General 2022, en nombre Matriculados_General -->
+            <input class="form-control mb-3" name="Docentes" type="file" id="formFile">
+
+            <label for="formFile" class="form-label">Distribución docente de tutorias en 2021-1 (.csv)</label>
+            <!-- Leemos alumnos Distribución docente de tutorias en 2021-1, en nombre archivo1 -->
+            <input class="form-control mb-3" name="Distribucion_docente" type="file" id="formFile">
+            <input type="submit" class="btn btn-primary" value="EXPORTAR RESULTADOS">
+        </form>
+        <?php
+            #Leemos los archivos
+            if (!isset($_FILES["Matriculados_General"])) {
+                #throw new Exception("Selecciona un archivo CSV válido");
+            }
+            if (!isset($_FILES["Distribucion_docente"])) {
+                #throw new Exception("Selecciona un archivo CSV válido.");
+            }
+            else{
+                #Cada archivo sera leido
+                $Matriculados_General   = $_FILES["Matriculados_General"];
+                $Distribucion_docente    = $_FILES["Distribucion_docente"];
+                #Creamo un objeto
+                $Mox=new Group73();
+                #Obtenemos los matriculados en genereal
+                $Arreglo_Matriculados=$Mox->csv_Array($Matriculados_General,0);
+                #Obtenemos la de alumnos con tutor del anterior semestre
+                $Arreglo_Dis_Docentes=$Mox->csv_Array($Distribucion_docente,0);
+                #$Mox->Imprimir($Arreglo_Dis_Docentes);
+                #Obtenemos el alumno y el docente del anterior semestre
+                $Arreglo_Dis_Docentes_Anterior=$Mox->csv_Array($Distribucion_docente,3);
+                #Obtenemos los alumnos no matriculados
+                $Alumnos_No_Matriculados=$Mox->Diferencia($Arreglo_Dis_Docentes,$Arreglo_Matriculados);
+                #$Mox->Imprimir($Arreglo_Matriculados);
+                #Obtenemos los alumnos sin tutor
+                $AlumnosSinTutor=$Mox->Diferencia($Arreglo_Matriculados,$Arreglo_Dis_Docentes);
+                $Mostrar=$AlumnosSinTutor;
+            ?>
+        <h3>EXPORTAR</h3>
+        <div class="row"> 
+            <div class="tab-pane container" id="Ejecutar">
+                <table class="table" >
+                    <thead class="table-success table-striped" id="Ejecutar" >
+                        <th>Numero</th>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                    </thead>
+                    <tbody>
+                        <?php  
+                            $Mox->Imprimir($AlumnosSinTutor);
+                            $Balanceado=$Mox->Balancear($AlumnosSinTutor,$AlumnosSinTutor,$Arreglo_Dis_Docentes_Anterior,$Alumnos_No_Matriculados);
+                            $Mox->GenerarCSV_No_Considerados($Alumnos_No_Matriculados);
+                            #$Mox->GenerarCSV($Alumnos_No_Matriculados);
+                            $Mox->GenerarCSV_Distribucion($Balanceado);
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
+        </div>         
+    </div>
 </body>
 </html>
