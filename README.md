@@ -26,6 +26,9 @@ los alumnos de acuerdo a un balance
 - Lenguaje:Php y html
 - Utilizando archivos ".csv"
 ### Descripcion del problema
+Dado 3 archivos .csv, "MatriculadosGeneral.csv", "Docentes.csv" y "Distribución docente de tutorias en 2021-1.csv" 
+el formulario del programa recibira dichos archivos en ese orden. Lo que debemos obtener son los alumnos que ya estan 
+estan matriculados y los que egresaron , en el segundo aspecto hacemos una distribucion de docentes.
 ## Datos de entrada:
 - Archivo CSV Lista de alumnos matriculados en el presente semestre.
 - Archivo CSV Lista de docentes para el presente semestre.
