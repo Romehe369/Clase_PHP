@@ -29,7 +29,7 @@
             <label for="formFile" class="form-label">Distribución docente de tutorias en 2021-1 (.csv)</label>
             <!-- Leemos alumnos Distribución docente de tutorias en 2021-1, en nombre archivo1 -->
             <input class="form-control mb-3" name="Distribucion_docente" type="file" id="formFile">
-            <input type="submit" class="btn btn-primary" value="Cargar y exportar">
+            <input type="submit" class="btn btn-primary" value="Cargar y Exportar">
         </form>
         <?php
             #Leemos los archivos
