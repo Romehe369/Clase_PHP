@@ -27,14 +27,14 @@ los alumnos de acuerdo a un balance
 - Utilizando archivos ".csv"
 ### Descripcion del problema
 ## Datos de entrada:
-Archivo CSV Lista de alumnos matriculados en el presente semestre.
-Archivo CSV Lista de docentes para el presente semestre.
-Archivo CSV Distribución de tutorías del anterior semestre.
+- Archivo CSV Lista de alumnos matriculados en el presente semestre.
+- Archivo CSV Lista de docentes para el presente semestre.
+- Archivo CSV Distribución de tutorías del anterior semestre.
 ## Resultado:
-Archivo CSV Lista de alumnos ya no son considerados en la tutoría (Alumnos no matriculados en el presente semestre).
-Archivo CSV Distribución balanceada de tutorías para el presente semestre.
+- Archivo CSV Lista de alumnos ya no son considerados en la tutoría (Alumnos no matriculados en el presente semestre).
+- Archivo CSV Distribución balanceada de tutorías para el presente semestre.
 ## Restricciones:
-Distribución balanceada: Distribución equitativa de estudiantes a tutores y Que el docente tenga alumnos de diferentes códigos.
-Implementación de una interface para el usuario sencilla, intuitiva y práctica.
-Mantener la lista de tutorías del anterior semestre con el docente asignado.
+- Distribución balanceada: Distribución equitativa de estudiantes a tutores y Que el docente tenga alumnos de diferentes códigos.
+- Implementación de una interface para el usuario sencilla, intuitiva y práctica.
+- Mantener la lista de tutorías del anterior semestre con el docente asignado.
 
