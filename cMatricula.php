@@ -2,8 +2,11 @@
 include 'cDocente.php';
 include 'cAlumno.php';
 class cMatricula{
+    #Nombre del docente
     private $Docente;
+    #Lista de alumnos del docente
     private $ArrAlumnos;
+    #Cantidad de alumnos
     private $Tamanio;
     //Metodos como Constructor
     function crearMatricula($Docente,$ArrAlumnos){
