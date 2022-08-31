@@ -124,7 +124,7 @@ class AllFunctions{
             #Recorremos buscando si existe el alumno para eliminarlo
             for($y = 0; $y < count($Arr_Matriculados_Anterior_S); $y++){
                 $Eliminado=$Arr_Matriculados_Anterior_S[$y]->EliminarAlumno($Eliminar);
-                if($Eliminado>-1){
+                if($Eliminado){
                     break;
                 }
             }
@@ -202,7 +202,7 @@ class AllFunctions{
         }
     }
     /* Funciones de Proceso*/
-    function Balancear($Matricula,$AlumnoSinTutor){
+    function Balancear($Matricula,$AlumnoSinTutor,$Docentes_Sin_Tutorando){
         $Medio=15;
         $Contador=0;
         for($y = 0; $y < count($Matricula); $y++){
@@ -217,6 +217,24 @@ class AllFunctions{
                     $Contador++;
                 }
             }
+        }
+        #Cuando sobra alumnos tomamos un docente sin tutorando y agregamoslos sobrantes a ese 
+        #Docente
+        if($Contador<count($AlumnoSinTutor)){
+            # Posicion en el areglo de docentes sin tutorando
+            $Pos_Docente=0;
+            # Agregamos los alumnos sobrantes en un arreglo
+            $Arr_Alumnos_Agregar=Array();
+            # Recorremos el arreglo agregando los sobrantes a
+            for($y = $Contador; $y < count($AlumnoSinTutor); $y++){
+                $Arr_Alumnos_Agregar[]=$AlumnoSinTutor[$y];
+            }
+            #Creamos un tipo de cMatricula_Tutorando
+            $AuxMatricula = new cMatricula();
+            #Asignamos un docente sin tutrando
+            $AuxMatricula->crearMatricula($Docentes_Sin_Tutorando[$Pos_Docente], $Arr_Alumnos_Agregar);
+            #Agregamos el nuevo docente con sus alumnos
+            $Matricula[]=$AuxMatricula;
         }
     }
     // En este modulo obtenemos la diferencia de dos tablas

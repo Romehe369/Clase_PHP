@@ -290,12 +290,6 @@
             </div>
         </div>
         <?php
-        session_start();
-        $_SESSION['ArrAlumnosNoMatriculados']  = $ArrAlumnosNoMatriculados;
-        $_SESSION['ArrAlumnosSinTutor'] = $ArrAlumnosSinTutor;
-        $_SESSION['ArrDocentesSinTutorando']   = $ArrDocentesSinTutorando;
-        $_SESSION['ArrExDocentes']   = $ArrExDocentes;
-        $_SESSION['ArrMatriculas2022']   = $ArrMatriculas2022;
         ?>
         <div class="row">
             <a class="btn btn-success">Enviar</a>
