@@ -4,7 +4,7 @@
 - **Universidad:** Universidad Nacional de San Antonio Abad del Cusco
 - **Facultad:** De ingenieria electrica, electronica, informatica y mecanica
 - **Escuela Profesional:** Ingenieria Informatica y de Sistemas
-#### Docnete:
+#### Docente:
 - **Ing. Quintanilla Portugal Roxana Lisette**
 - **Ing. Vittali Quispe Surco**
 #### Colaboradores:
@@ -23,7 +23,7 @@ no tienen tutoria y el segundo archivo "Distribucion_balanceada_tutorias.csv" la
 los alumnos de acuerdo a un balance
 
 ### Implementado en:
-- Lenguaje:Php y html
+- Lenguaje:Php, html y Css
 - Utilizando archivos ".csv"
 ### Descripcion del problema
 Dado 3 archivos .csv, "MatriculadosGeneral.csv", "Docentes.csv" y "Distribución docente de tutorias en 2021-1.csv" 
