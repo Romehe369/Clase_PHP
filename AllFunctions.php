@@ -129,7 +129,8 @@ class AllFunctions{
                 }
             }
         }
-    }function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
+    }
+    function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
         $Arreglo=array();
         for($x = 0; $x < count($ArrAlumnosA); $x++){
             $Existe=false;
@@ -156,7 +157,9 @@ class AllFunctions{
                 }
             }
             if($Existe==false){
-                $Arreglo[]=$ArrDocentesA[$x];
+                $DocAux=new cDocente();
+                $DocAux->crearDocente($ArrDocentesA[$x]->get_Nombre(), $ArrDocentesA[$x]->get_Categoria());
+                $Arreglo[]=$DocAux;
             }
         }
         return $Arreglo;
@@ -233,8 +236,8 @@ class AllFunctions{
         }
     }
     /* Funciones de Salida */
-    function Array_to_Csv(){
-        $fp = fopen('xyz.csv', 'w+');
+    function Array_to_Csv($NombreArchivo,$datos){
+        $fp = fopen($NombreArchivo, 'w+');
         // Escribimos los datos en el archivo 'archivo.csv'
         for($x = 0; $x < count($datos); $x++){
             fputcsv($fp, $datos[$x]);

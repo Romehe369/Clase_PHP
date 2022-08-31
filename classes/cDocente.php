@@ -14,6 +14,7 @@ class cDocente{
     function get_Categoria(){
         return $this->Categoria;
     }
+    //Metodos Set
     function set_Categoria($Categoria){
         $this->Categoria= $Categoria;
     }

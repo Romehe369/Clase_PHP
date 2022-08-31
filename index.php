@@ -150,14 +150,14 @@
         $ArrExDocentes=$ControlMox->DiferenciaDocentes($ArrDocentes2021,$ArrDocente2022);
         $ArrDocentesSinTutorando=$ControlMox->DiferenciaDocentes($ArrDocente2022,$ArrDocentes2021);
         #Obtenemos los no matriculados
-        $ArrMatriculas2022=$ArrMatriculas2021;
+        $ArrMatriculas2022 = new cMatricula();
+        $ArrMatriculas2022 = $ArrMatriculas2021;
         /*Actualizar datos de los docentes */
         $ControlMox->ActualizarCategoriaDocentes($ArrMatriculas2022,$ArrDocente2022);
         $ControlMox->QuitarExDocentes($ArrMatriculas2022,$ArrExDocentes);
         $ControlMox->AgregarNuevosDocentes($ArrMatriculas2022,$ArrDocentesSinTutorando);
         
         /*Actualizar datos de los Alumnos*/
-        $NroAlumnosXDocente=count($ArrAlumnos2022)/count($ArrDocente2022);
         $ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2022,$ArrAlumnosNoMatriculados);
         #$Arr_no_matriculados=$ControlMox->Diferencia($Total_Alumnos_Antiguos,$ArrAlumnos2022);
         # En nuestro clase matricula, todos alumnos antiguos que no estan matriculaods ahora, seran eliminados
@@ -199,7 +199,7 @@
                             </thead>
                             <tbody>
                             <?php
-                            echo count($ArrAlumnosNoMatriculados);
+                            echo "Nro. Alumnos: ".count($ArrAlumnosNoMatriculados);
                             if(!empty($ArrAlumnosNoMatriculados)){
                                 $ControlMox->ImprimirTabla($ArrAlumnosNoMatriculados);
                             }
@@ -218,7 +218,7 @@
                             </thead>
                             <tbody>
                             <?php
-                            echo count($ArrAlumnosSinTutor);
+                            echo "Nro. Alumnos: ".count($ArrAlumnosSinTutor);
                             if(!empty($ArrAlumnosSinTutor)){
                                 $ControlMox->ImprimirTabla($ArrAlumnosSinTutor);
                             }
@@ -231,13 +231,13 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Codigo</th>
                                 <th>Nombre</th>
+                                <th>Datos Importantes</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            echo count($ArrExDocentes);
+                            echo "Nro. Docentes: ".count($ArrExDocentes);
                             if(!empty($ArrExDocentes)){
                                 $ControlMox->ImprimirTabla($ArrExDocentes);
                             }
@@ -250,13 +250,13 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Codigo</th>
                                 <th>Nombre</th>
+                                <th>Categoria</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            echo count($ArrDocentesSinTutorando);
+                            echo "Nro. Docentes: ".count($ArrDocentesSinTutorando);
                             if(!empty($ArrDocentesSinTutorando)){
                                 $ControlMox->ImprimirTabla($ArrDocentesSinTutorando);
                             }
@@ -275,7 +275,7 @@
                             </thead>
                             <tbody>
                             <?php
-                            echo count($ArrMatriculas2022);
+                            echo "Nro. Matriculas: ".count($ArrMatriculas2022);
                             if(!empty($ArrMatriculas2022)){
                                 $ControlMox->ImprimirTablaMatricula($ArrMatriculas2022);
                             }
@@ -288,6 +288,17 @@
                 </div>
 
             </div>
+        </div>
+        <?php
+        session_start();
+        $_SESSION['ArrAlumnosNoMatriculados']  = $ArrAlumnosNoMatriculados;
+        $_SESSION['ArrAlumnosSinTutor'] = $ArrAlumnosSinTutor;
+        $_SESSION['ArrDocentesSinTutorando']   = $ArrDocentesSinTutorando;
+        $_SESSION['ArrExDocentes']   = $ArrExDocentes;
+        $_SESSION['ArrMatriculas2022']   = $ArrMatriculas2022;
+        ?>
+        <div class="row">
+            <a class="btn btn-success">Enviar</a>
         </div>
     </div>
 </body>
