@@ -260,7 +260,7 @@ class AllFunctions{
     }
     /* Funciones de Salida */
     function GenerarCSV_No_Considerados($datos){
-        $fp = fopen('AlumnosNoTutorados.csv', 'w+');
+        $fp = fopen('Resultados/AlumnosNoTutorados.csv', 'w+');
         // Escribimos los datos en el archivo 'archivo.csv'
         fputs($fp, "Alumnos no considerados para tutoría en 2022-I,"); 
         fputs($fp, "\n#,Código,Nombres\n");
@@ -278,7 +278,7 @@ class AllFunctions{
     #Funcion donde procedemos a guardar los resultados
     function GenerarCSV_Distribucion($datos){
         $fp = fopen('Resultados/DistribucionTutorados2022-I.csv', 'w+');
-        fputs($fp, "Resultados/Distribución Docentes de tutoría en 2022-I\n,"); 
+        fputs($fp, "Distribución Docentes de tutoría en 2022-I\n,"); 
         // Escribimos los datos en el archivo 'archivo.csv'
         foreach ($datos as $valor){
             $Dato=Array();
