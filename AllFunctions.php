@@ -125,16 +125,9 @@ class AllFunctions{
             }
         }
     }
-<<<<<<< HEAD
     # Obtenemos la diferencia de dos conjuntos(Tablas)
     function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
-        # Resultado donde se almacena
-        $Resultado_Diferencia=array();
-        #Recorremos el Arreglo 1, obtenmiendo sus valores
-=======
-    function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
         $Arreglo=array();
->>>>>>> 3df5ee969dafccd224f949fb46c63557515c9dd4
         for($x = 0; $x < count($ArrAlumnosA); $x++){
             # Booleano para indicar si existe dicho alumno en ambas tablas
             $Existe=false;
@@ -168,13 +161,10 @@ class AllFunctions{
                 }
             }
             if($Existe==false){
-<<<<<<< HEAD
                 $Resultado_Diferencia[]=$ArrDocentesA[$x];
-=======
                 $DocAux=new cDocente();
                 $DocAux->crearDocente($ArrDocentesA[$x]->get_Nombre(), $ArrDocentesA[$x]->get_Categoria());
                 $Arreglo[]=$DocAux;
->>>>>>> 3df5ee969dafccd224f949fb46c63557515c9dd4
             }
         }
         return $Resultado_Diferencia;
@@ -269,13 +259,10 @@ class AllFunctions{
         }
     }
     /* Funciones de Salida */
-<<<<<<< HEAD
     function GenerarCSV_No_Considerados($datos){
         $fp = fopen('AlumnosNoTutorados.csv', 'w+');
-=======
     function Array_to_Csv($NombreArchivo,$datos){
         $fp = fopen($NombreArchivo, 'w+');
->>>>>>> 3df5ee969dafccd224f949fb46c63557515c9dd4
         // Escribimos los datos en el archivo 'archivo.csv'
         fputs($fp, "Alumnos no considerados para tutoría en 2022-I,"); 
         fputs($fp, "\n#,Código,Nombres\n");

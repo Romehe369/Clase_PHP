@@ -18,11 +18,8 @@ class cDocente{
     function get_Categoria(){
         return $this->Categoria;
     }
-<<<<<<< HEAD
     # Asiganmos una categoria a docente
-=======
     //Metodos Set
->>>>>>> 3df5ee969dafccd224f949fb46c63557515c9dd4
     function set_Categoria($Categoria){
         $this->Categoria= $Categoria;
     }
