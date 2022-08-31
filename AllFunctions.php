@@ -1,6 +1,5 @@
 <?php
 include 'cMatricula.php';
-
 class AllFunctions{
     /* Funciones de Entrada */
     //Refactorizar csv_a_Array
@@ -99,22 +98,21 @@ class AllFunctions{
               return array();
           }
     }
-    #Obtenemos todos los alumnos matriculados en el semestre anterior
-    function Lista_Alumnos($ArrB){
-        #Los alumnos se almacenan en este arreglo
-        $Arreglo_alumnos=[];
-        # Tamanio, 
-        $Tamanio=0;
-        for($y = 0; $y < count($ArrB); $y++){
-            # Obtenemos los alumnos de cada docente
-            $ArrayC=$ArrB[$y]->get_ArrAlumnos();
-            # Recorremos cada alumno y agregamos a otra lista
-            for($xi = 0; $xi < count($ArrayC); $xi++){
-                $Arreglo_alumnos[$Tamanio]=$ArrayC[$xi];
-                $Tamanio++;
-            }
+    function ObtenerDocentesdeMatriculaArr($ArrMatricula){
+        $ArrResult=array();
+        foreach($ArrMatricula as $vMatricula){
+            $ArrResult[]=$vMatricula->get_Docente();
         }
-        return $Arreglo_alumnos;
+        return $ArrResult;
+    }
+    #Obtenemos todos los alumnos matriculados en el semestre anterior
+    function ObtenerAlumnosdeMatriculaArr($ArrMatricula){
+        #Los alumnos se almacenan en este arreglo
+        $ArrResult=array();
+        foreach($ArrMatricula as $vMatricula){
+            $ArrResult=array_merge($ArrResult, $vMatricula->get_Alumnos());
+        }
+        return $ArrResult;
     }
     # En Arr_Matriculados_Anterior_S viene los los alumnos matriculados en anterior semestre 
     # y en Arr_Alumnos_No_Matriculados estan los alumnos que ya estan matriculados en este semestre
@@ -125,26 +123,94 @@ class AllFunctions{
             $Eliminar=$Arr_Alumnos_No_Matriculados[$x]->get_Codigo();
             #Recorremos buscando si existe el alumno para eliminarlo
             for($y = 0; $y < count($Arr_Matriculados_Anterior_S); $y++){
-                $Eliminado=$Arr_Matriculados_Anterior_S[$y]->Eliminar_Alumno($Eliminar);
-                if($Eliminado){
+                $Eliminado=$Arr_Matriculados_Anterior_S[$y]->EliminarAlumno($Eliminar);
+                if($Eliminado>-1){
                     break;
                 }
             }
         }
+    }function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
+        $Arreglo=array();
+        for($x = 0; $x < count($ArrAlumnosA); $x++){
+            $Existe=false;
+            for($y = 0; $y < count($ArrAlumnosB); $y++){
+                if($ArrAlumnosA[$x]->get_Codigo()==$ArrAlumnosB[$y]->get_Codigo()){
+                    $Existe=true;
+                    break;
+                }
+            }
+            if($Existe==false){
+                $Arreglo[]=$ArrAlumnosA[$x];
+            }
+        }
+        return $Arreglo;
+    }
+    function DiferenciaDocentes($ArrDocentesA,$ArrDocentesB){
+        $Arreglo=array();
+        for($x = 0; $x < count($ArrDocentesA); $x++){
+            $Existe=false;
+            for($y = 0; $y < count($ArrDocentesB); $y++){
+                if($ArrDocentesA[$x]->get_Nombre()==$ArrDocentesB[$y]->get_Nombre()){
+                    $Existe=true;
+                    break;
+                }
+            }
+            if($Existe==false){
+                $Arreglo[]=$ArrDocentesA[$x];
+            }
+        }
+        return $Arreglo;
+    }
+    function ActualizarCategoriaDocentes($MatriculasAntigua,$DocentesActuales){
+        #Agregar Categoria a los docentes que no tengan
+        # o su categoria haya cambiado (Se cambia a todos)
+        foreach($MatriculasAntigua as $Matricula){
+            for($i=0; $i<count($DocentesActuales) ;$i++){
+                if($Matricula->get_Docente()->get_Nombre()===$DocentesActuales[$i]->get_Nombre()){
+                    $Matricula->get_Docente()->set_Categoria($DocentesActuales[$i]->get_Categoria());
+                }
+            }
+        }
+    }
+    function QuitarExDocentes($MatriculasAntigua,$ExDocentes){
+        foreach($MatriculasAntigua as $Matricula){
+            for($i=0; $i<count($ExDocentes) ;$i++){
+                if($Matricula->get_Docente()->get_Nombre()===$ExDocentes[$i]->get_Nombre()){
+                    $Matricula->get_Docente()->crearDocente('*','*');
+                }
+            }
+        }
+    }
+    function AgregarNuevosDocentes($MatriculasAntigua,$NuevosDocentes){
+        #Se Evita Dañar el Arreglo $NuevosDocentes
+        $NuevosDocentesAux=$NuevosDocentes;
+        $i=0;
+        #Agregar Nuevos Docentes
+        foreach($MatriculasAntigua as $Matricula){
+            #Se buscan los Cupos(Docentes Vacios) vacios
+            if($Matricula->get_Docente()->get_Nombre()==='*' and !empty($NuevosDocentesAux)){
+                $Matricula->get_Docente()->crearDocente(
+                    $NuevosDocentesAux[$i]->get_Nombre(),
+                    $NuevosDocentesAux[$i]->get_Categoria()
+                );
+                unset($NuevosDocentesAux[$i]);
+                $i++;
+            }
+        }
     }
     /* Funciones de Proceso*/
-    function Balancear($ArrA,$Arr_Alumnos_Nuevos){
+    function Balancear($Matricula,$AlumnoSinTutor){
         $Medio=15;
         $Contador=0;
-        for($y = 0; $y < count($ArrA); $y++){
+        for($y = 0; $y < count($Matricula); $y++){
             #Obtenemos la cantidad de alumnos por docente
-            $Tamanio=$ArrA[$y]->get_Tamanio();
-            if($Tamanio<$Medio and $Contador<count($Arr_Alumnos_Nuevos)){
-                #Completar alumnos de Arr_Alumnos_Nuevos
+            $Tamanio=$Matricula[$y]->get_numAlumnos();
+            if($Tamanio<$Medio and $Contador<count($AlumnoSinTutor)){
+                #Completar alumnos de AlumnoSinTutor
                 $Cantidad=$Medio-$Tamanio;
                 for($x = 0; $x < $Cantidad; $x++){
                     #Agregamos un alumno cada que este desbalanceado
-                    $ArrA[$y]->Agregar_Alumno($Arr_Alumnos_Nuevos[$Contador]);
+                    $Matricula[$y]->Agregar_Alumno($AlumnoSinTutor[$Contador]);
                     $Contador++;
                 }
             }
@@ -155,26 +221,6 @@ class AllFunctions{
         ArraA y ArrB deben contener objetos del mismo tipo, y el getcodigo
         obtener el id de dicho objetos, en este caso lista de alumnos
      */
-    function Diferencia($ArrA,$ArrB){
-        $fila=0;
-        $Arreglo=array();
-        for($x = 0; $x < count($ArrA); $x++){
-            $Existe=false;
-            for($y = 0; $y < count($ArrB); $y++){
-                if($ArrA[$x]->get_Codigo()==$ArrB[$y]->get_Codigo()){
-                    $Existe=true;
-                    break;
-                }
-            }
-            if($Existe==false){
-                $AuxAlumno = new cAlumno();
-                $AuxAlumno->crearAlumno($ArrA[$x]->get_Codigo(),$ArrA[$x]->get_Nombre());
-                $Arreglo[$fila]= $AuxAlumno;
-                $fila++;
-            }
-        }
-        return $Arreglo;
-    }
     /* Solo Funciona Con Parametros cDocente y cAlumno */
     function ImprimirTabla($Array){
         foreach($Array as $Dato){

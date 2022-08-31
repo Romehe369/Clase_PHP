@@ -14,6 +14,13 @@ class cDocente{
     function get_Categoria(){
         return $this->Categoria;
     }
+    function set_Categoria($Categoria){
+        $this->Categoria= $Categoria;
+    }
+    //Metodos to
+    function to_Array(){
+        return array($this->Nombre,$this->Categoria);
+    }
     function ImprimirFila(){
         echo '<tr><th>'.$this->Nombre.'</th><th>'.$this->Categoria.'</th></tr>';
     }

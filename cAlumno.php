@@ -3,7 +3,6 @@ class cAlumno{
     private $Codigo;
     private $Nombre;
     #Indica si el alumno es retirado, nuevo, exsistente.
-
     //Metodos como Contructor
     function crearAlumno($Codigo, $Nombre){
         $this->Codigo=$Codigo;
@@ -19,6 +18,14 @@ class cAlumno{
     }
     function get_Nombre(){
         return $this->Nombre;
+    }
+    function get_AnioCodigo(){
+        echo "anio";
+        return $this->Codigo[0].$this->Codigo[1];
+    }
+    //Metodos Extras
+    function to_Array(){
+        return array($this->Codigo,$this->Nombre);
     }
     function ImprimirFila(){
         echo '<tr><th>'.$this->Codigo.'</th><th>'.$this->Nombre.'</th></tr>';

@@ -9,8 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <title>Matriculados</title>
 </head>
-<body>
-    <div class="container">
+<body class="parallax-A">
+    <div class="container" >
         <div class="row">
             <h3 class="pb-3 pt-5">Agregar Archivos</h3>
             <!-- Creamos un formulario para leer los archivos -->
@@ -49,26 +49,15 @@
         $ArrDocente2022=$ControlMox->csv_to_ArrayGeneral($FileDocente);
         #Arreglo de matriculas -----Estan los alumnos antiguos
         $ArrMatriculas2021=$ControlMox->csv_to_ArrayGeneral($FileDistribucion);
-        #Arreglo general de alumnos antiguos
-        $Total_Alumnos_Antiguos=$ControlMox->Lista_Alumnos($ArrMatriculas2021);
-        #Obetenemos los alumnos nuevos
-        $Arr_Nuevos=$ControlMox->Diferencia($ArrAlumnos2022,$Total_Alumnos_Antiguos);
-        #Obtenemos los no matriculados
-        $Arr_no_matriculados=$ControlMox->Diferencia($Total_Alumnos_Antiguos,$ArrAlumnos2022);
-        # En nuestro clase matricula, todos alumnos antiguos que no estan matriculaods ahora, seran eliminados
-        $ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2021,$Arr_no_matriculados);
-        #Realizamos el balancear con los alumnos matriculados en 2021,  que  ahora estan matriculados 
-        # en el presente semestre y los nuevos que se matricularon 
-        $ControlMox->Balancear($ArrMatriculas2021,$Arr_Nuevos);
-    ?> 
-    <div class="container r">
+        ?>
+        <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <h3 class="pb-3">Tablas</h3>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs pb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#DxD">Tabla balanceada</a>
+                        <a class="nav-link active" data-bs-toggle="tab" href="#DxD">Matriculados 2021</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#Alumno">Alumnos 2022</a>
@@ -122,12 +111,163 @@
                             if(!empty($ArrDocente2022)){
                                 $ControlMox->ImprimirTabla($ArrDocente2022);
                             }
-                        }
                             ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+        <?php
+            
+        #Arreglo general de alumnos antiguos
+        #$Total_Alumnos_Antiguos=$ControlMox->Lista_Alumnos($ArrMatriculas2021);
+        $ArrDocentes2021=$ControlMox->ObtenerDocentesdeMatriculaArr($ArrMatriculas2021);
+        $ArrAlumnos2021=$ControlMox->ObtenerAlumnosdeMatriculaArr($ArrMatriculas2021);
+        #Obetenemos los alumnos nuevos
+        #$Arr_Nuevos=$ControlMox->Diferencia($ArrAlumnos2022,$Total_Alumnos_Antiguos);
+        $ArrAlumnosNoMatriculados=$ControlMox->DiferenciaAlumnos($ArrAlumnos2021,$ArrAlumnos2022);
+        $ArrAlumnosSinTutor=$ControlMox->DiferenciaAlumnos($ArrAlumnos2022,$ArrAlumnos2021);
+        $ArrExDocentes=$ControlMox->DiferenciaDocentes($ArrDocentes2021,$ArrDocente2022);
+        $ArrDocentesSinTutorando=$ControlMox->DiferenciaDocentes($ArrDocente2022,$ArrDocentes2021);
+        #Obtenemos los no matriculados
+        $ArrMatriculas2022=$ArrMatriculas2021;
+        /*Actualizar datos de los docentes */
+        $ControlMox->ActualizarCategoriaDocentes($ArrMatriculas2022,$ArrDocente2022);
+        $ControlMox->QuitarExDocentes($ArrMatriculas2022,$ArrExDocentes);
+        $ControlMox->AgregarNuevosDocentes($ArrMatriculas2022,$ArrDocentesSinTutorando);
+        
+        /*Actualizar datos de los Alumnos*/
+        $NroAlumnosXDocente=count($ArrAlumnos2022)/count($ArrDocente2022);
+        $ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2022,$ArrAlumnosNoMatriculados);
+        #$Arr_no_matriculados=$ControlMox->Diferencia($Total_Alumnos_Antiguos,$ArrAlumnos2022);
+        # En nuestro clase matricula, todos alumnos antiguos que no estan matriculaods ahora, seran eliminados
+        #$ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2021,$Arr_no_matriculados);
+        #Realizamos el balancear con los alumnos matriculados en 2021,  que  ahora estan matriculados 
+        # en el presente semestre y los nuevos que se matricularon 
+        $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor);
+    ?> 
+   <div class="col-6">
+                <h3 class="pb-3">Tablas</h3>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs pb-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#ArrAlumnosNoMatriculados">Alumnos No Matriculados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#ArrAlumnosSinTutor">Alumnos Sin Tutor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#ArrExDocentes">Ex-Docentes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#ArrDocentesSinTutorando">Docentes Sin Tutorandos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#ArrMatricula2022">ArrMatricula2022</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content p-3">
+                    <div class="tab-pane container active" id="ArrAlumnosNoMatriculados">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            echo count($ArrAlumnosNoMatriculados);
+                            if(!empty($ArrAlumnosNoMatriculados)){
+                                $ControlMox->ImprimirTabla($ArrAlumnosNoMatriculados);
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-content p-3">
+                    <div class="tab-pane container" id="ArrAlumnosSinTutor">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            echo count($ArrAlumnosSinTutor);
+                            if(!empty($ArrAlumnosSinTutor)){
+                                $ControlMox->ImprimirTabla($ArrAlumnosSinTutor);
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane container" id="ArrExDocentes">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            echo count($ArrExDocentes);
+                            if(!empty($ArrExDocentes)){
+                                $ControlMox->ImprimirTabla($ArrExDocentes);
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane container" id="ArrDocentesSinTutorando">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            echo count($ArrDocentesSinTutorando);
+                            if(!empty($ArrDocentesSinTutorando)){
+                                $ControlMox->ImprimirTabla($ArrDocentesSinTutorando);
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane container" id="ArrMatricula2022">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            echo count($ArrMatriculas2022);
+                            if(!empty($ArrMatriculas2022)){
+                                $ControlMox->ImprimirTablaMatricula($ArrMatriculas2022);
+                            }
+                        }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

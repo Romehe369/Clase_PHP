@@ -32,7 +32,7 @@ class cMatricula{
         return $this->Docente;
     }
     # Obtenemos la lista de alumnos
-    function get_ArrAlumnos(){
+    function get_Alumnos(){
         return $this->ArrAlumnos;
     }
     function set_ArrAlumnos($ArraAlumnos){
@@ -40,7 +40,7 @@ class cMatricula{
         $this->Tamanio=count($this->ArrAlumnos);
     }
     #Obtenemos el tamanio de la lista
-    function get_Tamanio(){
+    function get_numAlumnos(){
         return $this->Tamanio;
     }
     #Agregamos un alumno a nuestra lista de alumnos
@@ -50,39 +50,43 @@ class cMatricula{
         #Incrementamos la cantidad de alumnos
         $this->Tamanio++;
     }
-    /* Metodo para eliminar un alumno de la lista*/ 
-    function Eliminar_Alumno($Codigo){
-        #Indicamos un posicion de donde se va dividir
-        $Posicion_Corte=0;
-        #Creamos una variable donde indica si se ha eleminado un alumno
-        $Eliminado=FALSE;
-        #Recorremos la lista de alumnos
-        for($x = 0; $x < $this->Tamanio; $x++){
-            #Obtenemos un alumno de la posicion x
-            $Alumno=$this->ArrAlumnos[$x];
-            #Comparamos su el codigo a eliminar con un deternminado alumno
-            if($Codigo==$Alumno->get_Codigo()){
-                # Si se ha encontrado el alumno le indicaremos si se va eliminar el alumno
-                $Eliminado=TRUE;
-                # Guardamos la posicion de donde se va eliminar
-                $Posicion_Corte=$x;
-                #Salimos del bucle
-                break;
+    function to_Array(){
+        $Arr=$this->Docente->to_Array();
+        foreach($this->ArrAlumnos as $vAlumno){
+            $Arr=array_merge($Arr, $vAlumno->get_Alumnos());
+        }
+        return $Arr;
+    }
+    //Metodos
+    function NumAlumnosdeUnCodigo($str2DigCodigo){
+        if(strlen($str2DigCodigo)!==2){
+            $i=0;
+            foreach($this->ArrAlumnos as $vAlumno){
+                $Code=$vAlumno->get_Codigo();
+                if($Code[0].$Code[1]===$str2DigCodigo){
+                    $i++;
+                }
+            }
+            return $i;
+        }
+        return -1;
+    }
+    function BuscarAlumno($strAlumnoCode){
+        for($i=0; $i < count($this->ArrAlumnos); $i++){
+            if($this->ArrAlumnos[$i]===$strAlumnoCode){
+                return $i;
             }
         }
-        # Verificamos si vamos eliminar o no
-        if($Eliminado){
-            for($x = $Posicion_Corte; $x < $this->Tamanio-1; $x++){
-                #Saltamos al elemento siguiente reemplazando el anterior y asi eliminando dicho elemento
-                $this->ArrAlumnos[$x]=$this->ArrAlumnos[$x+1];
-            }
-            #Eliminamos el ultimo elemento porque si no podria generarse repeticion de alumnos
-            array_pop($this->ArrAlumnos);
-            #Obtenemos el nuevo tamanio
-            $this->Tamanio=count($this->ArrAlumnos);
+        return -1;
+    }
+    function EliminarAlumno($strAlumnoCode){
+        $i=$this->BuscarAlumno($strAlumnoCode);
+        if($i!==-1){
+            unset($this->ArrAlumnos[$i]);
+            return $i;
+        }else{
+            return $i;
         }
-        # Retornamos si se ha eliminado
-        return $Eliminado;
     }
 }
 
