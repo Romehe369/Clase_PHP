@@ -99,13 +99,16 @@ class AllFunctions{
               return array();
           }
     }
-    #Obtenemos arreglos totalmente limpios
+    #Obtenemos todos los alumnos matriculados en el semestre anterior
     function Lista_Alumnos($ArrB){
+        #Los alumnos se almacenan en este arreglo
         $Arreglo_alumnos=[];
-        #tamanio
+        # Tamanio, 
         $Tamanio=0;
         for($y = 0; $y < count($ArrB); $y++){
+            # Obtenemos los alumnos de cada docente
             $ArrayC=$ArrB[$y]->get_ArrAlumnos();
+            # Recorremos cada alumno y agregamos a otra lista
             for($xi = 0; $xi < count($ArrayC); $xi++){
                 $Arreglo_alumnos[$Tamanio]=$ArrayC[$xi];
                 $Tamanio++;
@@ -113,13 +116,14 @@ class AllFunctions{
         }
         return $Arreglo_alumnos;
     }
-    #En ArraA viene los valores anteriores
+    # En ArraA viene los valores anteriores y en ArrB estan los alumnos que ya estan en
+    # este semestre
     function Borrar_Alumnos_No_Matriculados($ArraA,$ArrB){
         $Tamanio=count($ArraA);
         for($x = 0; $x < count($ArrB); $x++){
             #Obtenemos los codigos a eliminar
             $Eliminar=$ArrB[$x]->get_Codigo();
-            #echo $Eliminar." Se ha eliminado <br>";
+            #Este recorremos buscando si existe el alumno para eliminarlo
             for($y = 0; $y < count($ArraA); $y++){
                 $Eliminado=$ArraA[$y]->Eliminar_Alumno($Eliminar);
                 if($Eliminado){
@@ -139,6 +143,7 @@ class AllFunctions{
                 #Completar alumnos de ArrB
                 $Cantidad=$Medio-$Tamanio;
                 for($x = 0; $x < $Cantidad; $x++){
+                    #Agregamos un alumno cada que este desbalanceado
                     $ArrA[$y]->Agregar_Alumno($ArrB[$Contador]);
                     $Contador++;
                 }
@@ -146,9 +151,12 @@ class AllFunctions{
         }
     }
     // En este modulo obtenemos la diferencia de dos tablas
+    /*
+        ArraA y ArrB deben contener objetos del mismo tipo, y el getcodigo
+        obtener el id de dicho objetos, en este caso lista de alumnos
+     */
     function Diferencia($ArrA,$ArrB){
         $fila=0;
-        $Valo=count($ArrB);
         $Arreglo=array();
         for($x = 0; $x < count($ArrA); $x++){
             $Existe=false;
