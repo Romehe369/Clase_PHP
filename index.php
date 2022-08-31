@@ -88,10 +88,6 @@
                     <div class="tab-pane container active" id="DxD">
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                            </tr>
                             </thead>
                             <tbody>
                             <?php
@@ -164,7 +160,7 @@
         #$ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2021,$Arr_no_matriculados);
         #Realizamos el balancear con los alumnos matriculados en 2021,  que  ahora estan matriculados 
         # en el presente semestre y los nuevos que se matricularon 
-        $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor);
+        $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor,$ArrDocentesSinTutorando);
     ?> 
    <div class="col-6">
                 <h3 class="pb-3">Tablas Salida</h3>
@@ -184,7 +180,7 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#ArrDocentesSinTutorando">Docentes Sin Tutorandos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#ArrMatricula2022">ArrMatricula2022</a>
+                        <a class="nav-link" data-bs-toggle="tab" href="#ArrMatricula2022">Tutoria Balanceado 2022</a>
                     </li>
                 </ul>
 
@@ -275,7 +271,7 @@
                             </thead>
                             <tbody>
                             <?php
-                            echo count($ArrMatriculas2022);
+                            #echo count($ArrMatriculas2022);
                             if(!empty($ArrMatriculas2022)){
                                 $ControlMox->ImprimirTablaMatricula($ArrMatriculas2022);
                             }

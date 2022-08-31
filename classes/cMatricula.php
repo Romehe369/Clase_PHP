@@ -17,11 +17,9 @@ class cMatricula{
     }
     //Imprimimos alumnos de un docente
     function ImprimirDocenteAlumnos(){
-        if($this->Docente->get_Categoria()=="---"){
-            $AuxDocente = new cDocente();
-            $AuxDocente->crearDocente($this->Docente->get_Nombre(), "CANTIDAD DE ALUMNOS : ".$this->Tamanio);
-            $this->Docente=$AuxDocente;  
-        }
+        $AuxDocente = new cDocente();
+        $AuxDocente->crearDocente($this->Docente->get_Nombre(), $this->Docente->get_Categoria()." NRO DE ALUMNOS : ".$this->Tamanio);
+        $this->Docente=$AuxDocente;  
         $this->Docente->ImprimirFila();
         foreach($this->ArrAlumnos as $vAlumno){
             $vAlumno->ImprimirFila();
@@ -71,22 +69,28 @@ class cMatricula{
         }
         return -1;
     }
-    function BuscarAlumno($strAlumnoCode){
-        for($i=0; $i < count($this->ArrAlumnos); $i++){
-            if($this->ArrAlumnos[$i]===$strAlumnoCode){
-                return $i;
+    function EliminarAlumno($Codigo){
+        $Posicion_Corte=0;
+        $Eliminado=FALSE;
+        for($x = 0; $x < $this->Tamanio; $x++){
+            $Alumno=$this->ArrAlumnos[$x];
+            #echo $Alumno->get_Codigo()." Codigo <br>";
+            if($Codigo==$Alumno->get_Codigo()){
+                #Salir del bucle
+                $Eliminado=TRUE;
+                $Posicion_Corte=$x;
+                break;
             }
         }
-        return -1;
-    }
-    function EliminarAlumno($strAlumnoCode){
-        $i=$this->BuscarAlumno($strAlumnoCode);
-        if($i!==-1){
-            unset($this->ArrAlumnos[$i]);
-            return $i;
-        }else{
-            return $i;
+        if($Eliminado){
+            for($x = $Posicion_Corte; $x < $this->Tamanio-1; $x++){
+                $this->ArrAlumnos[$x]=$this->ArrAlumnos[$x+1];
+                $Eliminado=TRUE;
+            }
+            array_pop($this->ArrAlumnos);
+            $this->Tamanio=count($this->ArrAlumnos);
         }
+        return $Eliminado;
     }
 }
 
