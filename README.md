@@ -29,7 +29,7 @@ los alumnos de acuerdo a un balance
 ### Descripcion del problema
 Dado 3 archivos .csv, "MatriculadosGeneral.csv", "Docentes.csv" y "Distribución docente de tutorias en 2021-1.csv".
 El formulario del programa recibira dichos archivos en ese orden. Lo que se debe obtener son los alumnos que ya estan 
-estan matriculados y los que egresaron, para el segundo aspecto hacemos una distribucion de docentes.
+estan matriculados y los que egresaron, para el segundo aspecto hacemos una distribucion de docentes, designando a cada docente sus respectivos tutorandos.
 ## Datos de entrada:
 - Archivo CSV Lista de alumnos matriculados en el presente semestre.
 - Archivo CSV Lista de docentes para el presente semestre.
