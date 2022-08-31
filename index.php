@@ -31,7 +31,6 @@
             <div class="col-8">
                 <h1>Agregar Archivos</h1>
                 <div class="linea lineaA"></div>
-                <div class="mb-3">
                     <form action="index.php" method="post" enctype="multipart/form-data">
                             <label for="formFile" class="form-label">Alumnos Matriculados General 2022 (.csv)</label>
                             <input class="form-control mb-3" name="FileAlumnos" type="file" id="formFile">
@@ -43,11 +42,12 @@
                             <input class="form-control mb-3" name="FileDocente" type="file" id="formFile">
                             
                             <input type="submit" class="btn btn-primary" value="Cargar">
+                            <a class="a"  href=Resultados/AlumnosNoTutorados.csv>Descargar Alumnos no tutorados</a>
+                            <a class="a"  href=Resultados/DistribucionTutorados2022-I.csv>Descargar Distribucion de tutorias</a>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
     <?php
         /* Iniciar Valores */
         include 'AllFunctions.php';
