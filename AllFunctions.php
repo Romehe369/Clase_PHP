@@ -261,8 +261,6 @@ class AllFunctions{
     /* Funciones de Salida */
     function GenerarCSV_No_Considerados($datos){
         $fp = fopen('AlumnosNoTutorados.csv', 'w+');
-    function Array_to_Csv($NombreArchivo,$datos){
-        $fp = fopen($NombreArchivo, 'w+');
         // Escribimos los datos en el archivo 'archivo.csv'
         fputs($fp, "Alumnos no considerados para tutoría en 2022-I,"); 
         fputs($fp, "\n#,Código,Nombres\n");
@@ -304,5 +302,6 @@ class AllFunctions{
         // Después de terminar de escribir los datos, cerramos el archivo 'archivo.csv'
         fclose($fp);
     }
+
 }
 ?>
