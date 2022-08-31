@@ -1,6 +1,6 @@
 <?php
-include 'cDocente.php';
-include 'cAlumno.php';
+include_once 'cDocente.php';
+include_once 'cAlumno.php';
 class cMatricula{
     #Nombre del docente
     private $Docente;

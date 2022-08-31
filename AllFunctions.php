@@ -1,5 +1,5 @@
 <?php
-include 'cMatricula.php';
+include_once  './classes/cMatricula.php';
 class AllFunctions{
     /* Funciones de Entrada */
     //Refactorizar csv_a_Array
