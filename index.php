@@ -55,7 +55,7 @@
             #throw new Exception("Selecciona un archivo CSV válido.");
         } # Se ejecuta este bloque cuando no presenta ningun error
         else{
-            #Se asigna los de los archivo a una direccion
+            #Se asigna los archivo a una direccion
             $FileAlumnos          = $_FILES["FileAlumnos"];
             $FileDistribucion     = $_FILES["FileDistribucion"];
             $FileDocente          = $_FILES["FileDocente"];
@@ -137,11 +137,11 @@
         $ArrDocentes2021=$ControlMox->ObtenerDocentesdeMatriculaArr($ArrMatriculas2021);
         #Obtenemos un arreglo de los matriculados
         $ArrAlumnos2021=$ControlMox->ObtenerAlumnosdeMatriculaArr($ArrMatriculas2021);
-        #Obetenemos los alumnos nuevos
+        #Obtenemos los alumnos nuevos
         $ArrAlumnosNoMatriculados=$ControlMox->DiferenciaAlumnos($ArrAlumnos2021,$ArrAlumnos2022);
         #Obtenemos los alumnos sin tutor
         $ArrAlumnosSinTutor=$ControlMox->DiferenciaAlumnos($ArrAlumnos2022,$ArrAlumnos2021);
-        #Obteenmos lops docentes antiguos
+        #Obtenemos lops docentes antiguos
         $ArrExDocentes=$ControlMox->DiferenciaDocentes($ArrDocentes2021,$ArrDocente2022);
         #Obtenemos los docentes que no dan tutoria
         $ArrDocentesSinTutorando=$ControlMox->DiferenciaDocentes($ArrDocente2022,$ArrDocentes2021);
@@ -152,11 +152,11 @@
         $ControlMox->ActualizarCategoriaDocentes($ArrMatriculas2022,$ArrDocente2022);
         #Quitamos los docentes que ya no dictan
         $ControlMox->QuitarExDocentes($ArrMatriculas2022,$ArrExDocentes);
-        #Asiganamos los nuevos docentes
+        #Asignamos los nuevos docentes
         $ControlMox->AgregarNuevosDocentes($ArrMatriculas2022,$ArrDocentesSinTutorando);
         # En nuestro clase matricula, todos alumnos antiguos que no estan matriculaods ahora, seran eliminados
         $ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2022,$ArrAlumnosNoMatriculados);
-        #Realizamos el balancear con los alumnos matriculados en 2021,  que  ahora estan matriculados 
+        #Realizamos el balanceo con los alumnos matriculados en 2021,  que  ahora estan matriculados 
         # en el presente semestre y los nuevos que se matricularon 
         $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor,$ArrDocentesSinTutorando);
     ?> 
@@ -195,9 +195,9 @@
                             <?php
                             echo "Nro. Alumnos: ".count($ArrAlumnosNoMatriculados);
                             if(!empty($ArrAlumnosNoMatriculados)){
-                                #Mostramos nuestro resultados de alumnos no matriculaods
+                                #Mostramos el resultados de los alumnos no matriculaods
                                 $ControlMox->ImprimirTabla($ArrAlumnosNoMatriculados);
-                                #Generemaos su correspondiente csv
+                                #Generamos su correspondiente csv
                                 $ControlMox->GenerarCSV_No_Considerados($ArrAlumnosNoMatriculados);
                             }
                             ?>
