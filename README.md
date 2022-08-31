@@ -4,8 +4,9 @@
 - **Universidad:** Universidad Nacional de San Antonio Abad del Cusco
 - **Facultad:** De ingenieria electrica, electronica, informatica y mecanica
 - **Escuela Profesional:** Ingenieria Informatica y de Sistemas
-#### Docnete:
+#### Docente de Teoria:
 - **Ing. Quintanilla Portugal Roxana Lisette**
+#### Docente de Laboratorio
 - **Ing. Vittali Quispe Surco**
 #### Colaboradores:
 - **CUETO SANCHEZ CARLA PALOMA** [PALOMA](https://github.com/carlasanchez15)
@@ -23,12 +24,12 @@ no tienen tutoria y el segundo archivo "Distribucion_balanceada_tutorias.csv" la
 los alumnos de acuerdo a un balance
 
 ### Implementado en:
-- Lenguaje:Php y html
+- Lenguaje:Php, HTML y Css
 - Utilizando archivos ".csv"
 ### Descripcion del problema
-Dado 3 archivos .csv, "MatriculadosGeneral.csv", "Docentes.csv" y "Distribución docente de tutorias en 2021-1.csv" 
-el formulario del programa recibira dichos archivos en ese orden. Lo que debemos obtener son los alumnos que ya estan 
-estan matriculados y los que egresaron , en el segundo aspecto hacemos una distribucion de docentes.
+Dado 3 archivos .csv, "MatriculadosGeneral.csv", "Docentes.csv" y "Distribución docente de tutorias en 2021-1.csv".
+El formulario del programa recibira dichos archivos en ese orden. Lo que se debe obtener son los alumnos que ya estan 
+estan matriculados y los que egresaron, para el segundo aspecto hacemos una distribucion de docentes.
 ## Datos de entrada:
 - Archivo CSV Lista de alumnos matriculados en el presente semestre.
 - Archivo CSV Lista de docentes para el presente semestre.
