@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <!--BootsTrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <title>Matriculados</title>
+    <!--Css Style Interno-->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Control Matriculas</title>
 </head>
 <body class="parallax-A">
-    <div class="container" >
+    <div class="container">
         <div class="row">
-            <h3 class="pb-3 pt-5">Agregar Archivos</h3>
-            <!-- Creamos un formulario para leer los archivos -->
-            <div class="col-12 pb-3">
+            <h1 class="pt-5 pb-5 text-center">
+                UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD DEL CUSCO
+            </h1>
+        </div>
+        <div class="row">
+            <!-- Para Agregar CSV -->
+            <div class="col-4 text-center">
+                <div class="borderRMox pb-3">
+                    <img src="assets/img/logo.png" alt="">
+                    <h2>
+                        Ingeniería Informática y de Sistemas
+                    </h2>
+                </div>
+            </div>
+            <div class="col-8">
+                <h1>Agregar Archivos</h1>
+                <div class="linea lineaA"></div>
                 <div class="mb-3">
                     <form action="index.php" method="post" enctype="multipart/form-data">
                             <label for="formFile" class="form-label">Alumnos Matriculados General 2022 (.csv)</label>
@@ -53,7 +69,8 @@
         <div class="container">
         <div class="row">
             <div class="col-6">
-                <h3 class="pb-3">Tablas</h3>
+                <h3 class="pb-3">Tablas Entradas</h3>
+                <div class="linea lineaA"></div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs pb-3">
                     <li class="nav-item">
@@ -71,6 +88,10 @@
                     <div class="tab-pane container active" id="DxD">
                         <table class="table">
                             <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                            </tr>
                             </thead>
                             <tbody>
                             <?php
@@ -117,8 +138,7 @@
                     </div>
                 </div>
             </div>
-        <?php
-            
+            <?php 
         #Arreglo general de alumnos antiguos
         #$Total_Alumnos_Antiguos=$ControlMox->Lista_Alumnos($ArrMatriculas2021);
         $ArrDocentes2021=$ControlMox->ObtenerDocentesdeMatriculaArr($ArrMatriculas2021);
@@ -147,7 +167,8 @@
         $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor);
     ?> 
    <div class="col-6">
-                <h3 class="pb-3">Tablas</h3>
+                <h3 class="pb-3">Tablas Salida</h3>
+                <div class="linea lineaA"></div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs pb-3">
                     <li class="nav-item">
@@ -186,9 +207,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
 
-                <div class="tab-content p-3">
                     <div class="tab-pane container" id="ArrAlumnosSinTutor">
                         <table class="table">
                             <thead>
