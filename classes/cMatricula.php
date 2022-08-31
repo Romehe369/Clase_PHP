@@ -11,16 +11,22 @@ class cMatricula{
     //Metodos como Constructor
     function crearMatricula($Docente,$ArrAlumnos){
         $this->Docente=$Docente;
+        # Alumnos de tutoria de un docente
         $this->ArrAlumnos=$ArrAlumnos;
         #Obtenemos la cantidad de alumnos
         $this->Tamanio=count($ArrAlumnos);
     }
     //Imprimimos alumnos de un docente
     function ImprimirDocenteAlumnos(){
+        # Creamos un docente nuevo
         $AuxDocente = new cDocente();
+        # Creamos un dato de informacion de categoria y numero de alumnos
         $AuxDocente->crearDocente($this->Docente->get_Nombre(), $this->Docente->get_Categoria()." NRO DE ALUMNOS : ".$this->Tamanio);
+        #Modificamos el docente con sus categoria y numero de alumnos
         $this->Docente=$AuxDocente;  
+        # Procedemos a mostrar el docente
         $this->Docente->ImprimirFila();
+        # Procedemos a mostrar sus alumnos
         foreach($this->ArrAlumnos as $vAlumno){
             $vAlumno->ImprimirFila();
         }
@@ -33,6 +39,7 @@ class cMatricula{
     function get_Alumnos(){
         return $this->ArrAlumnos;
     }
+    # Metodo para cambiar los alumnos de un determinado docente tutor
     function set_ArrAlumnos($ArraAlumnos){
         $this->ArrAlumnos=$ArraAlumnos;
         $this->Tamanio=count($this->ArrAlumnos);
@@ -48,52 +55,35 @@ class cMatricula{
         #Incrementamos la cantidad de alumnos
         $this->Tamanio++;
     }
-    function to_Array(){
-        $Arr=$this->Docente->to_Array();
-        foreach($this->ArrAlumnos as $vAlumno){
-            $Arr=array_merge($Arr, $vAlumno->get_Alumnos());
-        }
-        return $Arr;
-    }
-    //Metodos
-    function NumAlumnosdeUnCodigo($str2DigCodigo){
-        if(strlen($str2DigCodigo)!==2){
-            $i=0;
-            foreach($this->ArrAlumnos as $vAlumno){
-                $Code=$vAlumno->get_Codigo();
-                if($Code[0].$Code[1]===$str2DigCodigo){
-                    $i++;
-                }
-            }
-            return $i;
-        }
-        return -1;
-    }
+    #Esta funcion es para eliminar un alumno por codigo
     function EliminarAlumno($Codigo){
+        # Nos indica el posicion de corte o eliminacion
         $Posicion_Corte=0;
+        # Booleano donde se almacena si existe alumno y sera eliminado
         $Eliminado=FALSE;
+        # Recorremos los alumnos de dicha clase de tutoria
         for($x = 0; $x < $this->Tamanio; $x++){
+            # Obtenemos un alumno de la posicion x
             $Alumno=$this->ArrAlumnos[$x];
-            #echo $Alumno->get_Codigo()." Codigo <br>";
+            # Verificamos si el codigo coincide con algun alumno
             if($Codigo==$Alumno->get_Codigo()){
-                #Salir del bucle
+                # Inidcamos que se ha encontrado para eliminarlo
                 $Eliminado=TRUE;
                 $Posicion_Corte=$x;
                 break;
             }
         }
-        if($Eliminado){
+        if($Eliminado){ #Verificamos si se va eliminar
             for($x = $Posicion_Corte; $x < $this->Tamanio-1; $x++){
+                #El alumno de la posicion de corte sera reemplazado popr el siguiente alumno
                 $this->ArrAlumnos[$x]=$this->ArrAlumnos[$x+1];
-                $Eliminado=TRUE;
             }
+            # Eliminamos la ultimo posicion para no generar repetidos
             array_pop($this->ArrAlumnos);
+            # Calculamos el nuevo tamanio
             $this->Tamanio=count($this->ArrAlumnos);
         }
         return $Eliminado;
     }
 }
-
-
-
 ?>

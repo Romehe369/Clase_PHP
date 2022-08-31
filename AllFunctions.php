@@ -2,14 +2,14 @@
 include_once  './classes/cMatricula.php';
 class AllFunctions{
     /* Funciones de Entrada */
-    //Refactorizar csv_a_Array
+    // Leemos los datos de un csv a un array
     function csv_to_ArrayAlumno($tmp){
         $ArrAlumnos=array();
         if (($gestor = fopen($tmp, "r")) !== FALSE){
             while (($datos = fgetcsv($gestor, 1000, ",")) !== FALSE) {
                 if($datos[0]!=='codigo'){
                     $AuxAlumno=new cAlumno();
-                    $AuxAlumno->crearAlumno($datos[0],$datos[1],TRUE);
+                    $AuxAlumno->crearAlumno($datos[0],$datos[1]);
                     $ArrAlumnos[]= $AuxAlumno;
                 }
             }
@@ -23,7 +23,7 @@ class AllFunctions{
             while (($datos = fgetcsv($gestor, 1000, ",")) !== FALSE) {
                 if($datos[0]!=='Nombre'){
                     $AuxDocente=new cDocente();
-                    $AuxDocente->crearDocente($datos[0],$datos[1],FALSE);
+                    $AuxDocente->crearDocente($datos[0],$datos[1]);
                     $ArrDocente[]= $AuxDocente;
                 }
             }
@@ -48,19 +48,13 @@ class AllFunctions{
                     //Espacio de prueba
                     $Datos1=$datos[1]." /";
                     $val=explode(' /' ,$Datos1);
-                    if(strlen($val[1])>1){
-                        $AuxDocente->crearDocente($val[1], '---');
-                        $AuxDocente->crearDocente($val[0], '---');
-                    }
-                    else{
-                        $AuxDocente->crearDocente($val[0], '---');
-                    }
+                    $AuxDocente->crearDocente($val[0], '---');
                 }
                 if($datos[0]!=='CODIGO' and substr($datos[0], 0, 7)!=='Docente'){
                     #echo $datos[0]."<br>";
                     if(strlen($datos[0])>3){
                         $AuxAlumno = new cAlumno();
-                        $AuxAlumno->crearAlumno($datos[0],$datos[1],TRUE);
+                        $AuxAlumno->crearAlumno($datos[0],$datos[1]);
                         $ArrAuxAlumnos[]= $AuxAlumno;
                     }
                 }
@@ -68,6 +62,7 @@ class AllFunctions{
         }
         #Agregamos el ultimo docente y alumno a nuestra tabla
         $AuxMatricula = new cMatricula();
+        #Creamos un tipo de matriculas
         $AuxMatricula->crearMatricula($AuxDocente, $ArrAuxAlumnos);
         $ArrMatricula[]=$AuxMatricula;
         fclose($gestor);
@@ -129,26 +124,38 @@ class AllFunctions{
                 }
             }
         }
-    }function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
-        $Arreglo=array();
+    }
+    # Obtenemos la diferencia de dos conjuntos(Tablas)
+    function DiferenciaAlumnos($ArrAlumnosA, $ArrAlumnosB){
+        # Resultado donde se almacena
+        $Resultado_Diferencia=array();
+        #Recorremos el Arreglo 1, obtenmiendo sus valores
         for($x = 0; $x < count($ArrAlumnosA); $x++){
+            # Booleano para indicar si existe dicho alumno en ambas tablas
             $Existe=false;
+            #Recorremos el Arreglo 2, obtenmiendo sus valores
             for($y = 0; $y < count($ArrAlumnosB); $y++){
+                # existe dicho alumno en ambas tablas
                 if($ArrAlumnosA[$x]->get_Codigo()==$ArrAlumnosB[$y]->get_Codigo()){
                     $Existe=true;
                     break;
                 }
             }
+            # Si no existe entonces agregamos como alumno unico, es un alumno nuevo
+            # o un alumno ya egresado dependiendo del orden de los parametros.
             if($Existe==false){
-                $Arreglo[]=$ArrAlumnosA[$x];
+                $Resultado_Diferencia[]=$ArrAlumnosA[$x];
             }
         }
-        return $Arreglo;
+        return $Resultado_Diferencia;
     }
     function DiferenciaDocentes($ArrDocentesA,$ArrDocentesB){
-        $Arreglo=array();
+         # Resultado donde se almacena docentes unicos
+        $Resultado_Diferencia=array();
+        #Recorremos el Arreglo 1, obtenmiendo sus valores
         for($x = 0; $x < count($ArrDocentesA); $x++){
             $Existe=false;
+             #Recorremos el Arreglo 2, obtenmiendo sus valores
             for($y = 0; $y < count($ArrDocentesB); $y++){
                 if($ArrDocentesA[$x]->get_Nombre()==$ArrDocentesB[$y]->get_Nombre()){
                     $Existe=true;
@@ -156,10 +163,10 @@ class AllFunctions{
                 }
             }
             if($Existe==false){
-                $Arreglo[]=$ArrDocentesA[$x];
+                $Resultado_Diferencia[]=$ArrDocentesA[$x];
             }
         }
-        return $Arreglo;
+        return $Resultado_Diferencia;
     }
     function ActualizarCategoriaDocentes($MatriculasAntigua,$DocentesActuales){
         #Agregar Categoria a los docentes que no tengan
@@ -251,13 +258,48 @@ class AllFunctions{
         }
     }
     /* Funciones de Salida */
-    function Array_to_Csv(){
-        $fp = fopen('xyz.csv', 'w+');
+    function GenerarCSV_No_Considerados($datos){
+        $fp = fopen('AlumnosNoTutorados.csv', 'w+');
         // Escribimos los datos en el archivo 'archivo.csv'
+        fputs($fp, "Alumnos no considerados para tutoría en 2022-I,"); 
+        fputs($fp, "\n#,Código,Nombres\n");
         for($x = 0; $x < count($datos); $x++){
-            fputcsv($fp, $datos[$x]);
+            $Dato=Array();
+            # Le damos un formato para guardar los datos
+            $Dato[0]=$datos[$x]->get_Codigo();
+            $Dato[1]=$datos[$x]->get_Nombre();
+            # escribimos en el disco
+            fputcsv($fp, $Dato);
         }
-        fclose($fp); 
+        // Después de terminar de escribir los datos, cerramos el archivo 'archivo.csv'
+        fclose($fp);
+    }
+    #Funcion donde procedemos a guardar los resultados
+    function GenerarCSV_Distribucion($datos){
+        $fp = fopen('Resultados/DistribucionTutorados2022-I.csv', 'w+');
+        fputs($fp, "Resultados/Distribución Docentes de tutoría en 2022-I\n,"); 
+        // Escribimos los datos en el archivo 'archivo.csv'
+        foreach ($datos as $valor){
+            $Dato=Array();
+            $Docente1=$valor->get_Docente();
+            $Docente1->ImprimirFila();
+            # Le damos un formato para guardar los datos
+            $Dato[0]=$Docente1->get_Nombre();
+            $Dato[1]=$Docente1->get_Categoria();
+            # escribimos en el disco
+            fputcsv($fp, $Dato);
+            $Array_Alumnos=$valor->get_Alumnos();
+            for($i = 0; $i < count($Array_Alumnos); $i++){
+                $Dato=Array();
+                # Le damos un formato para guardar los datos
+                $Dato[0]=$Array_Alumnos[$i]->get_Codigo();
+                $Dato[1]=$Array_Alumnos[$i]->get_Nombre();
+                # escribimos en el disco
+                fputcsv($fp, $Dato);
+            }
+        }
+        // Después de terminar de escribir los datos, cerramos el archivo 'archivo.csv'
+        fclose($fp);
     }
 }
 ?>

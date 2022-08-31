@@ -1,5 +1,6 @@
 <?php
 class cAlumno{
+    ///////////////////// Atributo ////////////////// 
     private $Codigo;
     private $Nombre;
     #Indica si el alumno es retirado, nuevo, exsistente.
@@ -13,20 +14,15 @@ class cAlumno{
         $this->Nombre=$Nombre;
     }
     //Metodos Get
+    # Obtenemos el codigo del alumno
     function get_Codigo(){
         return $this->Codigo;
     }
+     # Obtenemos el nombre del alumno
     function get_Nombre(){
         return $this->Nombre;
     }
-    function get_AnioCodigo(){
-        echo "anio";
-        return $this->Codigo[0].$this->Codigo[1];
-    }
-    //Metodos Extras
-    function to_Array(){
-        return array($this->Codigo,$this->Nombre);
-    }
+    # Mostramos los resultados
     function ImprimirFila(){
         echo '<tr><th>'.$this->Codigo.'</th><th>'.$this->Nombre.'</th></tr>';
     }

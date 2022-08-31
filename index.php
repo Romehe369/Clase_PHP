@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <!--Css Style Interno-->
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Control Matriculas</title>
+    <title>Control Tutoria</title>
 </head>
 <body class="parallax-A">
     <div class="container">
@@ -198,6 +198,7 @@
                             echo count($ArrAlumnosNoMatriculados);
                             if(!empty($ArrAlumnosNoMatriculados)){
                                 $ControlMox->ImprimirTabla($ArrAlumnosNoMatriculados);
+                                $ControlMox->GenerarCSV_No_Considerados($ArrAlumnosNoMatriculados);
                             }
                             ?>
                             </tbody>
@@ -274,6 +275,7 @@
                             #echo count($ArrMatriculas2022);
                             if(!empty($ArrMatriculas2022)){
                                 $ControlMox->ImprimirTablaMatricula($ArrMatriculas2022);
+                                $ControlMox->GenerarCSV_Distribucion($ArrMatriculas2022);
                             }
                         }
                             ?>
