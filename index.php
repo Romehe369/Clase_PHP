@@ -55,17 +55,17 @@
             #throw new Exception("Selecciona un archivo CSV válido.");
         } # Se ejecuta este bloque cuando no presenta ningun error
         else{
-        #Se asigna los de los archivo a una direccion
-        $FileAlumnos          = $_FILES["FileAlumnos"];
-        $FileDistribucion     = $_FILES["FileDistribucion"];
-        $FileDocente          = $_FILES["FileDocente"];
-        
-        $ControlMox=new AllFunctions();
-        $ArrAlumnos2022=$ControlMox->csv_to_ArrayGeneral($FileAlumnos);
-        $ArrDocente2022=$ControlMox->csv_to_ArrayGeneral($FileDocente);
-        #Arreglo de matriculas -----Estan los alumnos antiguos
-        $ArrMatriculas2021=$ControlMox->csv_to_ArrayGeneral($FileDistribucion);
-        ?>
+            #Se asigna los de los archivo a una direccion
+            $FileAlumnos          = $_FILES["FileAlumnos"];
+            $FileDistribucion     = $_FILES["FileDistribucion"];
+            $FileDocente          = $_FILES["FileDocente"];
+            
+            $ControlMox=new AllFunctions();
+            $ArrAlumnos2022=$ControlMox->csv_to_ArrayGeneral($FileAlumnos);
+            $ArrDocente2022=$ControlMox->csv_to_ArrayGeneral($FileDocente);
+            #Arreglo de matriculas -----Estan los alumnos antiguos
+            $ArrMatriculas2021=$ControlMox->csv_to_ArrayGeneral($FileDistribucion);
+            ?>
         <div class="container">
         <div class="row">
             <div class="col-6">
@@ -87,12 +87,6 @@
                 <div class="tab-content p-3">
                     <div class="tab-pane container active" id="DxD">
                         <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                            </tr>
-                            </thead>
                             <tbody>
                             <?php
                             if(!empty($ArrMatriculas2021)){
@@ -140,29 +134,28 @@
             </div>
             <?php 
         #Arreglo general de alumnos antiguos
-        #$Total_Alumnos_Antiguos=$ControlMox->Lista_Alumnos($ArrMatriculas2021);
         $ArrDocentes2021=$ControlMox->ObtenerDocentesdeMatriculaArr($ArrMatriculas2021);
-       
+        #Obtenemos un arreglo de los matriculados
         $ArrAlumnos2021=$ControlMox->ObtenerAlumnosdeMatriculaArr($ArrMatriculas2021);
         #Obetenemos los alumnos nuevos
-        #$Arr_Nuevos=$ControlMox->Diferencia($ArrAlumnos2022,$Total_Alumnos_Antiguos);
         $ArrAlumnosNoMatriculados=$ControlMox->DiferenciaAlumnos($ArrAlumnos2021,$ArrAlumnos2022);
+        #Obtenemos los alumnos sin tutor
         $ArrAlumnosSinTutor=$ControlMox->DiferenciaAlumnos($ArrAlumnos2022,$ArrAlumnos2021);
+        #Obteenmos lops docentes antiguos
         $ArrExDocentes=$ControlMox->DiferenciaDocentes($ArrDocentes2021,$ArrDocente2022);
+        #Obtenemos los docentes que no dan tutoria
         $ArrDocentesSinTutorando=$ControlMox->DiferenciaDocentes($ArrDocente2022,$ArrDocentes2021);
-        #Obtenemos los no matriculados
+        #Obtenemos una copia de nuestros datos
         $ArrMatriculas2022 = new cMatricula();
         $ArrMatriculas2022 = $ArrMatriculas2021;
         /*Actualizar datos de los docentes */
         $ControlMox->ActualizarCategoriaDocentes($ArrMatriculas2022,$ArrDocente2022);
+        #Quitamos los docentes que ya no dictan
         $ControlMox->QuitarExDocentes($ArrMatriculas2022,$ArrExDocentes);
+        #Asiganamos los nuevos docentes
         $ControlMox->AgregarNuevosDocentes($ArrMatriculas2022,$ArrDocentesSinTutorando);
-        
-        /*Actualizar datos de los Alumnos*/
-        $ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2022,$ArrAlumnosNoMatriculados);
-        #$Arr_no_matriculados=$ControlMox->Diferencia($Total_Alumnos_Antiguos,$ArrAlumnos2022);
         # En nuestro clase matricula, todos alumnos antiguos que no estan matriculaods ahora, seran eliminados
-        #$ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2021,$Arr_no_matriculados);
+        $ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2022,$ArrAlumnosNoMatriculados);
         #Realizamos el balancear con los alumnos matriculados en 2021,  que  ahora estan matriculados 
         # en el presente semestre y los nuevos que se matricularon 
         $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor,$ArrDocentesSinTutorando);
@@ -185,7 +178,7 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#ArrDocentesSinTutorando">Docentes Sin Tutorandos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#ArrMatricula2022">ArrMatricula2022</a>
+                        <a class="nav-link" data-bs-toggle="tab" href="#ArrMatricula2022">Balanceo Tutoria 2022</a>
                     </li>
                 </ul>
 
@@ -202,7 +195,9 @@
                             <?php
                             echo "Nro. Alumnos: ".count($ArrAlumnosNoMatriculados);
                             if(!empty($ArrAlumnosNoMatriculados)){
+                                #Mostramos nuestro resultados de alumnos no matriculaods
                                 $ControlMox->ImprimirTabla($ArrAlumnosNoMatriculados);
+                                #Generemaos su correspondiente csv
                                 $ControlMox->GenerarCSV_No_Considerados($ArrAlumnosNoMatriculados);
                             }
                             ?>
@@ -277,7 +272,7 @@
                             </thead>
                             <tbody>
                             <?php
-                            echo "Nro. Matriculas: ".count($ArrMatriculas2022);
+                            echo "Nro. Tutorias: ".count($ArrMatriculas2022);
                             if(!empty($ArrMatriculas2022)){
                                 $ControlMox->ImprimirTablaMatricula($ArrMatriculas2022);
                                 $ControlMox->GenerarCSV_Distribucion($ArrMatriculas2022);
@@ -291,11 +286,6 @@
                 </div>
 
             </div>
-        </div>
-        <?php
-        ?>
-        <div class="row pt-5">
-            <a class="btn btn-success">Enviar</a>
         </div>
     </div>
 </body>
