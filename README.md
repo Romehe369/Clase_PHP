@@ -18,7 +18,7 @@
 ---
 ## Tema
 
-Programa que genera dos archivos csv y lo guarda "\xampp\htdocs\(Nombre de la carpeta)\".
+Programa que genera dos archivos csv y lo guarda en "Resultados".
 El primer archivo es "No_Considerados_En_Tutoria.csv" en la cual estan los alumnos que ya
 no tienen tutoria y el segundo archivo "Distribucion_balanceada_tutorias.csv" la distribucion 
 los alumnos de acuerdo a un balance
@@ -38,7 +38,7 @@ estan matriculados y los que egresaron, para el segundo aspecto hacemos una dist
 - Archivo CSV Lista de alumnos ya no son considerados en la tutoría (Alumnos no matriculados en el presente semestre).
 - Archivo CSV Distribución balanceada de tutorías para el presente semestre.
 ## Restricciones:
-- Distribución balanceada: Distribución equitativa de estudiantes a tutores y Que el docente tenga alumnos de diferentes códigos.
+- Distribución balanceada: Distribución de estudiantes a tutores y que el docente tenga alumnos de diferentes códigos.
 - Implementación de una interface para el usuario sencilla, intuitiva y práctica.
 - Mantener la lista de tutorías del anterior semestre con el docente asignado.
 
