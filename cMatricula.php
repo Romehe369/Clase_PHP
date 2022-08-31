@@ -17,9 +17,14 @@ class cMatricula{
     }
     //Imprimimos alumnos de un docente
     function ImprimirDocenteAlumnos(){
-        $this->Docente->ImprimirFila("Antiguo");
+        if($this->Docente->get_Categoria()=="---"){
+            $AuxDocente = new cDocente();
+            $AuxDocente->crearDocente($this->Docente->get_Nombre(), "CANTIDAD DE ALUMNOS : ".$this->Tamanio);
+            $this->Docente=$AuxDocente;  
+        }
+        $this->Docente->ImprimirFila();
         foreach($this->ArrAlumnos as $vAlumno){
-            $vAlumno->ImprimirFila("Antiguo");
+            $vAlumno->ImprimirFila();
         }
     }
     # Obtenemos el nombre del docente
@@ -30,7 +35,6 @@ class cMatricula{
     function get_ArrAlumnos(){
         return $this->ArrAlumnos;
     }
-
     function set_ArrAlumnos($ArraAlumnos){
         $this->ArrAlumnos=$ArraAlumnos;
         $this->Tamanio=count($this->ArrAlumnos);

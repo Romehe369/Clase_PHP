@@ -50,11 +50,11 @@ class AllFunctions{
                     $Datos1=$datos[1]." /";
                     $val=explode(' /' ,$Datos1);
                     if(strlen($val[1])>1){
-                        $AuxDocente->crearDocente($val[1], '---',TRUE);
-                        $AuxDocente->crearDocente($val[0], '---',FALSE);
+                        $AuxDocente->crearDocente($val[1], '---');
+                        $AuxDocente->crearDocente($val[0], '---');
                     }
                     else{
-                        $AuxDocente->crearDocente($val[0], '---',FALSE);
+                        $AuxDocente->crearDocente($val[0], '---');
                     }
                 }
                 if($datos[0]!=='CODIGO' and substr($datos[0], 0, 7)!=='Docente'){
@@ -116,16 +116,16 @@ class AllFunctions{
         }
         return $Arreglo_alumnos;
     }
-    # En ArraA viene los valores anteriores y en ArrB estan los alumnos que ya estan en
-    # este semestre
-    function Borrar_Alumnos_No_Matriculados($ArraA,$ArrB){
-        $Tamanio=count($ArraA);
-        for($x = 0; $x < count($ArrB); $x++){
+    # En Arr_Matriculados_Anterior_S viene los los alumnos matriculados en anterior semestre 
+    # y en Arr_Alumnos_No_Matriculados estan los alumnos que ya estan matriculados en este semestre
+    function Borrar_Alumnos_No_Matriculados($Arr_Matriculados_Anterior_S,$Arr_Alumnos_No_Matriculados){
+        $Tamanio=count($Arr_Matriculados_Anterior_S);
+        for($x = 0; $x < count($Arr_Alumnos_No_Matriculados); $x++){
             #Obtenemos los codigos a eliminar
-            $Eliminar=$ArrB[$x]->get_Codigo();
-            #Este recorremos buscando si existe el alumno para eliminarlo
-            for($y = 0; $y < count($ArraA); $y++){
-                $Eliminado=$ArraA[$y]->Eliminar_Alumno($Eliminar);
+            $Eliminar=$Arr_Alumnos_No_Matriculados[$x]->get_Codigo();
+            #Recorremos buscando si existe el alumno para eliminarlo
+            for($y = 0; $y < count($Arr_Matriculados_Anterior_S); $y++){
+                $Eliminado=$Arr_Matriculados_Anterior_S[$y]->Eliminar_Alumno($Eliminar);
                 if($Eliminado){
                     break;
                 }
@@ -133,18 +133,18 @@ class AllFunctions{
         }
     }
     /* Funciones de Proceso*/
-    function Balancear($ArrA,$ArrB){
+    function Balancear($ArrA,$Arr_Alumnos_Nuevos){
         $Medio=15;
         $Contador=0;
         for($y = 0; $y < count($ArrA); $y++){
             #Obtenemos la cantidad de alumnos por docente
             $Tamanio=$ArrA[$y]->get_Tamanio();
-            if($Tamanio<$Medio and $Contador<count($ArrB)){
-                #Completar alumnos de ArrB
+            if($Tamanio<$Medio and $Contador<count($Arr_Alumnos_Nuevos)){
+                #Completar alumnos de Arr_Alumnos_Nuevos
                 $Cantidad=$Medio-$Tamanio;
                 for($x = 0; $x < $Cantidad; $x++){
                     #Agregamos un alumno cada que este desbalanceado
-                    $ArrA[$y]->Agregar_Alumno($ArrB[$Contador]);
+                    $ArrA[$y]->Agregar_Alumno($Arr_Alumnos_Nuevos[$Contador]);
                     $Contador++;
                 }
             }
@@ -168,7 +168,7 @@ class AllFunctions{
             }
             if($Existe==false){
                 $AuxAlumno = new cAlumno();
-                $AuxAlumno->crearAlumno($ArrA[$x]->get_Codigo(),$ArrA[$x]->get_Nombre(),$ArrA[$x]->get_Estado());
+                $AuxAlumno->crearAlumno($ArrA[$x]->get_Codigo(),$ArrA[$x]->get_Nombre());
                 $Arreglo[$fila]= $AuxAlumno;
                 $fila++;
             }
@@ -178,7 +178,7 @@ class AllFunctions{
     /* Solo Funciona Con Parametros cDocente y cAlumno */
     function ImprimirTabla($Array){
         foreach($Array as $Dato){
-            $Dato->ImprimirFila("Antiguo");
+            $Dato->ImprimirFila();
         }
     }
     function ImprimirTablaMatricula($Array){
