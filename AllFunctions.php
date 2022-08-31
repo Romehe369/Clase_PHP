@@ -131,7 +131,7 @@ class AllFunctions{
         for($x = 0; $x < count($ArrAlumnosA); $x++){
             # Booleano para indicar si existe dicho alumno en ambas tablas
             $Existe=false;
-            #Recorremos el Arreglo 2, obtenmiendo sus valores
+            #Recorremos el Arreglo 2, obteniendo sus valores
             for($y = 0; $y < count($ArrAlumnosB); $y++){
                 # existe dicho alumno en ambas tablas
                 if($ArrAlumnosA[$x]->get_Codigo()==$ArrAlumnosB[$y]->get_Codigo()){
@@ -150,10 +150,10 @@ class AllFunctions{
     function DiferenciaDocentes($ArrDocentesA,$ArrDocentesB){
          # Resultado donde se almacena docentes unicos
         $Resultado_Diferencia=array();
-        #Recorremos el Arreglo 1, obtenmiendo sus valores
+        #Recorremos el Arreglo 1, obteniendo sus valores
         for($x = 0; $x < count($ArrDocentesA); $x++){
             $Existe=false;
-             #Recorremos el Arreglo 2, obtenmiendo sus valores
+             #Recorremos el Arreglo 2, obteniendo sus valores
             for($y = 0; $y < count($ArrDocentesB); $y++){
                 if($ArrDocentesA[$x]->get_Nombre()==$ArrDocentesB[$y]->get_Nombre()){
                     $Existe=true;
