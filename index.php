@@ -142,6 +142,7 @@
         #Arreglo general de alumnos antiguos
         #$Total_Alumnos_Antiguos=$ControlMox->Lista_Alumnos($ArrMatriculas2021);
         $ArrDocentes2021=$ControlMox->ObtenerDocentesdeMatriculaArr($ArrMatriculas2021);
+       
         $ArrAlumnos2021=$ControlMox->ObtenerAlumnosdeMatriculaArr($ArrMatriculas2021);
         #Obetenemos los alumnos nuevos
         #$Arr_Nuevos=$ControlMox->Diferencia($ArrAlumnos2022,$Total_Alumnos_Antiguos);
@@ -164,7 +165,7 @@
         #$ControlMox->Borrar_Alumnos_No_Matriculados($ArrMatriculas2021,$Arr_no_matriculados);
         #Realizamos el balancear con los alumnos matriculados en 2021,  que  ahora estan matriculados 
         # en el presente semestre y los nuevos que se matricularon 
-        $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor);
+        $ControlMox->Balancear($ArrMatriculas2022,$ArrAlumnosSinTutor,$ArrDocentesSinTutorando);
     ?> 
    <div class="col-6">
                 <h3 class="pb-3">Tablas Salida</h3>
@@ -291,7 +292,7 @@
         </div>
         <?php
         ?>
-        <div class="row">
+        <div class="row pt-5">
             <a class="btn btn-success">Enviar</a>
         </div>
     </div>
